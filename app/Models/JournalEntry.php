@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Traits\DateFormatTrait;
 
 class JournalEntry extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTrait;
 
     protected $fillable = [
         'entry_number',

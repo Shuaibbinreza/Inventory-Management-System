@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use App\Traits\DateFormatTrait;
 
 class Sale extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTrait;
 
     protected $fillable = [
         'product_id',

@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
+use App\Traits\DateFormatTrait;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, DateFormatTrait;
 
     protected $fillable = [
         'name',
