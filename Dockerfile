@@ -1,4 +1,4 @@
-# Use official PHP image
+# Base image
 FROM php:8.2-fpm
 
 # Install system dependencies
@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzip-dev \
     nginx \
+    supervisor \
     && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Install Composer
@@ -20,20 +21,24 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy project
+# Copy project files
 COPY . .
 
-# Install dependencies
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Copy nginx config
+# Copy Nginx config
 COPY docker/nginx.conf /etc/nginx/sites-available/default
 
-# Expose port
+# Copy entrypoint script
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Expose port 80
 EXPOSE 80
 
-# Start nginx + php-fpm
-CMD service nginx start && php-fpm
+# Run entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
