@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OAuth\AuthController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\ExportController;
 
 Route::get('/', function () {
     return redirect()->route('inventory.dashboard');
@@ -26,15 +27,15 @@ Route::prefix('inventory')->name('inventory.')->group(function () {
     Route::get('/sales', [InventoryController::class, 'sales'])->name('sales');
     Route::get('/sales/create', [InventoryController::class, 'createSale'])->name('create-sale');
     Route::post('/sales', [InventoryController::class, 'storeSale'])->name('store-sale');
-    Route::get('/sales/export', [InventoryController::class, 'exportSales'])->name('export-sales');
+    Route::get('/sales/export', [ExportController::class, 'sales'])->name('export-sales');
     
     // Journal Entries
     Route::get('/journal-entries', [InventoryController::class, 'journalEntries'])->name('journal-entries');
-    Route::get('/journal-entries/export', [InventoryController::class, 'exportJournalEntries'])->name('export-journal-entries');
+    Route::get('/journal-entries/export', [ExportController::class, 'journalEntries'])->name('export-journal-entries');
     
     // Financial Report
     Route::get('/financial-report', [InventoryController::class, 'financialReport'])->name('financial-report');
-    Route::get('/financial-report/export', [InventoryController::class, 'exportFinancialReport'])->name('export-financial-report');
+    Route::get('/financial-report/export', [ExportController::class, 'financialReport'])->name('export-financial-report');
     Route::get('/expense/create', [InventoryController::class, 'createExpense'])->name('create-expense');
     Route::post('/expense', [InventoryController::class, 'storeExpense'])->name('store-expense');
     
