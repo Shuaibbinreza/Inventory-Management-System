@@ -20,8 +20,26 @@ class Expense extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'expense_date' => 'date',
+        'expense_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Set expense_date from DD-MM-YYYY format
+     */
+    public function setExpenseDateAttribute($value)
+    {
+        if ($value) {
+            // Check if already in YYYY-MM-DD format
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+                $this->attributes['expense_date'] = $value;
+            } else {
+                // Convert DD-MM-YYYY to YYYY-MM-DD
+                $this->attributes['expense_date'] = \Carbon\Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d');
+            }
+        } else {
+            $this->attributes['expense_date'] = $value;
+        }
+    }
 
     /**
      * Get expense_date in DD-MM-YYYY format

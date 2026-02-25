@@ -37,8 +37,26 @@ class Sale extends Model
         'total_amount' => 'decimal:2',
         'paid_amount' => 'decimal:2',
         'due_amount' => 'decimal:2',
-        'sale_date' => 'date',
+        'sale_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Set sale_date from DD-MM-YYYY format
+     */
+    public function setSaleDateAttribute($value)
+    {
+        if ($value) {
+            // Check if already in YYYY-MM-DD format
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+                $this->attributes['sale_date'] = $value;
+            } else {
+                // Convert DD-MM-YYYY to YYYY-MM-DD
+                $this->attributes['sale_date'] = \Carbon\Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d');
+            }
+        } else {
+            $this->attributes['sale_date'] = $value;
+        }
+    }
 
     public function product(): BelongsTo
     {

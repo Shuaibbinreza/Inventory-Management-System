@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OAuth\AuthController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\DemoController;
 
 Route::get('/', function () {
     return redirect()->route('inventory.dashboard');
@@ -40,5 +41,5 @@ Route::prefix('inventory')->name('inventory.')->group(function () {
     Route::post('/expense', [InventoryController::class, 'storeExpense'])->name('store-expense');
     
     // Demo Data
-    Route::get('/init-demo', [InventoryController::class, 'initDemoData'])->name('init-demo');
+    Route::get('/init-demo', [DemoController::class, 'initDemoData'])->name('init-demo');
 });

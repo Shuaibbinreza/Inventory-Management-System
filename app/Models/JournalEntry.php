@@ -24,9 +24,27 @@ class JournalEntry extends Model
     ];
 
     protected $casts = [
-        'entry_date' => 'date',
+        'entry_date' => 'date:Y-m-d',
         'amount' => 'decimal:2',
     ];
+
+    /**
+     * Set entry_date from DD-MM-YYYY format
+     */
+    public function setEntryDateAttribute($value)
+    {
+        if ($value) {
+            // Check if already in YYYY-MM-DD format
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+                $this->attributes['entry_date'] = $value;
+            } else {
+                // Convert DD-MM-YYYY to YYYY-MM-DD
+                $this->attributes['entry_date'] = \Carbon\Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d');
+            }
+        } else {
+            $this->attributes['entry_date'] = $value;
+        }
+    }
 
     public function sale(): BelongsTo
     {

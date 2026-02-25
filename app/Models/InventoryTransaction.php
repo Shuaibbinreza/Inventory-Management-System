@@ -25,8 +25,26 @@ class InventoryTransaction extends Model
         'quantity' => 'integer',
         'unit_price' => 'decimal:2',
         'total_amount' => 'decimal:2',
-        'transaction_date' => 'date',
+        'transaction_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Set transaction_date from DD-MM-YYYY format
+     */
+    public function setTransactionDateAttribute($value)
+    {
+        if ($value) {
+            // Check if already in YYYY-MM-DD format
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+                $this->attributes['transaction_date'] = $value;
+            } else {
+                // Convert DD-MM-YYYY to YYYY-MM-DD
+                $this->attributes['transaction_date'] = \Carbon\Carbon::createFromFormat('d-m-Y', $value)->format('Y-m-d');
+            }
+        } else {
+            $this->attributes['transaction_date'] = $value;
+        }
+    }
 
     public function product(): BelongsTo
     {
